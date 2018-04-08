@@ -31,7 +31,7 @@
 				.attr('width', width)
 				.attr('height', height);
 
-			var context = canvas_es5.node().getContext('2d');
+			var context = canvas.node().getContext('2d');
 
 			draw();
 
@@ -78,8 +78,10 @@
 
 				for (var long = 0; long < data.data[current_year].length; long++) {
 					for (var lat = 0; lat < data.data[current_year][long].length; lat++) {
-						context.fillStyle = color(data.data[current_year][long][lat]);
-						context.fillRect(long * pixel, lat * pixel, pixel, pixel);
+						if (data.data[current_year][long][lat] !== 0) {
+							context.fillStyle = color(data.data[current_year][long][lat]);
+							context.fillRect(long * pixel, lat * pixel, pixel, pixel);
+						}
 					}
 				}
 			}
