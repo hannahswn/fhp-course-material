@@ -50,6 +50,9 @@
 				.padding(0)
 				.domain(d3.range(data.data[current_year][0].length));
 
+
+			// svg - all rectangles
+
 			var long = svg.selectAll(".long")
 				.data(data.data[current_year])
 				.enter().append("g")
@@ -75,6 +78,9 @@
 				.style('fill', function (d) {
 					return color(d)
 				});
+
+
+			// svg - rectangles just for data points
 
 			// for (var long = 0; long < data.data[current_year].length; long++) {
 			// 	for (var lat = 0; lat < data.data[current_year][long].length; lat++) {
