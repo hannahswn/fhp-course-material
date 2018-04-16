@@ -1,5 +1,7 @@
 # Data Exploration Tools
 
+Größere Sammlung: [dataviz.tools](http://dataviz.tools/)
+
 ## Data Wrangling Tools
 
 ### [CMD line tools](https://github.com/dbohdan/structured-text-tools)
@@ -29,7 +31,6 @@ Sammlung vieler Tools
 
 ## Chart Übersicht
 - [datavizcatalogue.com](https://datavizcatalogue.com/)
-- [dataviz.tools](http://dataviz.tools/)
 - [datavizproject.com](http://datavizproject.com/)
 - [Paper: A Tour through the Visualization Zoo](https://queue.acm.org/detail.cfm?id=1805128)
 
