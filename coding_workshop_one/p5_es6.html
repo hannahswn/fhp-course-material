@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CO2 Datensatz - canvas</title>
+	<script src="../lib/d3.v4.js"></script>
+	<script src="../lib/p5.min.js"></script>
+	<script src="../lib/chroma.min.js"></script>
+</head>
+<body>
+<span>Year: </span><span id="year"></span>
+<div id="map">
+
+</div>
+
+<script type="text/javascript">
+const pixel = 3
+
+let data = null
+let currentYear = 0
+let width = 0
+let height = 0
+
+function preload() {
+	data = loadJSON('../data/C02_full_1751-2013.json')
+}
+
+function setup() {
+	noLoop()
+	currentYear = data.data.length - 1
+
+	width = pixel * data.data[currentYear].length
+	height = pixel * data.data[currentYear][0].length
+
+	createCanvas(width, height)
+}
+
+function draw() {
+	d3.select('#year').text(() => 1751 + currentYear)
+
+	let min = 1e10
+	let max = -1e10
+
+	for (let long = 0; long < data.data[currentYear].length; long++) {
+		for (let lat = 0; lat < data.data[currentYear][long].length; lat++) {
+			if (data.data[currentYear][long][lat] < min && data.data[currentYear][long][lat] !== 0) {
+				min = data.data[currentYear][long][lat];
+			}
+			if (data.data[currentYear][long][lat] > max) {
+				max = data.data[currentYear][long][lat];
+			}
+		}
+	}
+	let color = chroma.scale().domain([min, max], 'log');
+	clear()
+	noStroke()
+	for (let long = 0; long < data.data[currentYear].length; long++) {
+		for (let lat = 0; lat < data.data[currentYear][long].length; lat++) {
+			if (data.data[currentYear][long][lat] !== 0) {
+				fill(...color(data.data[currentYear][long][lat])._rgb.map((c, i) => i === 3 ? c * 255 : c))
+				rect(long * pixel, lat * pixel, pixel, pixel)
+			}
+		}
+	}
+}
+
+function keyPressed() {
+	if (keyCode === RIGHT_ARROW) {
+		if (currentYear === data.data.length - 1) {
+			currentYear = 0;
+		} else {
+			currentYear++;
+		}
+  } else if (keyCode === LEFT_ARROW) {
+		if (currentYear === 0) {
+			currentYear = data.data.length - 1;
+		} else {
+			currentYear--;
+		}
+	}
+	redraw()
+}
+</script>
+</body>
+</html>
