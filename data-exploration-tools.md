@@ -102,3 +102,5 @@ As Vega-Lite is designed for analysis, it supports data transformations such as 
 ## Andere Tools
 - [Sim Daltonism](https://michelf.ca/projects/sim-daltonism/)
 - [Numi](https://numi.io/)
+- [ColorBrewer](http://colorbrewer2.org/)
+- [Chroma.js](https://gka.github.io/palettes/#colors=lightyellow,orange,deeppink,darkred|steps=7|bez=1|coL=1)
