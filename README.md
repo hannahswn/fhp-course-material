@@ -1,6 +1,14 @@
 # Course Material
 
-## Links
+## Data workshop
+
+[Informationen](data_workshop.md)
+
+## Datavis Workshop
+
+[Informationen](data-exploration-tools.md)
+
+## Coding workshop
 
 ### Learn Coding
 
