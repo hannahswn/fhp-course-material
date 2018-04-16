@@ -1,6 +1,7 @@
 # Data Exploration Tools
 
-Größere Sammlung: [dataviz.tools](http://dataviz.tools/)
+- Größere Sammlung: [dataviz.tools](http://dataviz.tools/)
+- Lisas Blogpost: [One Chart, Twelve Tools](https://lisacharlotterost.github.io/2016/05/17/one-chart-tools/)
 
 ## Data Wrangling Tools
 
