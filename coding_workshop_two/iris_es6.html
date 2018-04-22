@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Updates on Data</title>
+
+	<script src="../lib/d3.v4.js"></script>
+	<script src="../lib/chroma.min.js"></script>
+
+	<style>
+		body {
+			font-family: "Roboto";
+		}
+
+		svg text {
+			font-family: "Roboto Mono";
+		}
+
+		.container {
+			display: flex;
+		}
+
+		#viz {
+		<!-- background: #ccd0de;
+		--> padding: 15px;
+		}
+
+		#control {
+			background: #dce0ee;
+			padding: 15px;
+		}
+
+	</style>
+
+</head>
+<body>
+
+<div class="container">
+	<div id="viz"></div>
+	<div id="control">
+		y-Axis:
+		<form>
+			<input type="radio" class="yform" name="y" value="SepalLengthCm" checked> SepalLengthCm<br>
+			<input type="radio" class="yform" name="y" value="SepalWidthCm"> SepalWidthCm<br>
+			<input type="radio" class="yform" name="y" value="PetalLengthCm"> PetalLengthCm<br>
+			<input type="radio" class="yform" name="y" value="PetalWidthCm"> PetalWidthCm
+		</form>
+		x-Axis:
+		<form>
+			<input type="radio" class="xform" name="x" value="SepalLengthCm"> SepalLengthCm<br>
+			<input type="radio" class="xform" name="x" value="SepalWidthCm" checked> SepalWidthCm<br>
+			<input type="radio" class="xform" name="x" value="PetalLengthCm"> PetalLengthCm<br>
+			<input type="radio" class="xform" name="x" value="PetalWidthCm"> PetalWidthCm
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	window.onload = () => {
+
+		let margin = {top: 10, left: 25, bottom: 20, right: 10};
+		let width = 500 - margin.left - margin.right;
+		let height = 400 - margin.top - margin.bottom;
+
+		//mapping an ordinal scale to 10 colors
+		let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+		let xName = 'SepalWidthCm',
+			yName = 'SepalLengthCm';
+
+		let data;
+
+		d3.selectAll('input[type=radio][name=y]')
+		   .on('change', () => {
+			yName = this.value;
+			redraw();
+		});
+
+		d3.selectAll('input[type=radio][name=x]')
+		   .on('change', () => {
+			xName = this.value;
+			redraw();
+		});
+
+		let x = d3.scaleLinear()
+			.range([0, width]);
+
+		let y = d3.scaleLinear()
+			.range([height, 0]);
+
+		let yAxis = d3.axisLeft(y),
+			xAxis = d3.axisBottom(x);
+
+		let svg = d3.select('#viz')
+			.append('svg')
+			.attr('width', width + margin.left + margin.right)
+			.attr('height', height + margin.top + margin.bottom);
+
+		let g = svg.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+
+		let gy = g.append('g')
+			.attr('class', 'y-axis')
+			.call(yAxis);
+
+		let gx = g.append('g')
+			.attr('class', 'x-axis')
+			.attr('transform', 'translate(0,' + height + ')')
+			.call(xAxis);
+
+		d3.csv('iris.csv', (error, dat) => {
+
+			data = dat;
+
+			data.forEach((d) => {
+				d.SepalLengthCm = +d.SepalLengthCm;
+				d.SepalWidthCm = +d.SepalWidthCm;
+				d.PetalLengthCm = +d.PetalLengthCm;
+				d.PetalWidthCm = +d.PetalWidthCm;
+			});
+
+			redraw()
+
+		});
+
+		function redraw() {
+			x.domain(d3.extent(data, (d) => {
+				return d[xName];
+			}));
+
+			y.domain(d3.extent(data, (d) => {
+				return d[yName];
+			}));
+
+			gy.transition()
+				.duration(1500)
+				.call(yAxis);
+			gx.transition()
+				.duration(1500)
+				.call(xAxis);
+
+			let dots = g.selectAll('.dot')
+				.data(data);
+
+			dots.exit().remove();
+
+			dots.enter().append('circle')
+				.attr('class', 'dot')
+				.attr('r', 3)
+				.style('fill', (d) => {
+					return color(d.Species)
+				})
+				.merge(dots)
+				.transition()
+				.duration(1500)
+				.attr('cy', (d) => {
+					return y(d[yName]);
+				})
+				.attr('cx', (d) => {
+					return x(d[xName]);
+				})
+
+		}
+	};
+</script>
+</body>
+</html>
